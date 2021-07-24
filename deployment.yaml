@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: redisgui
+  name: redisgui
+  namespace: odoo
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: redisgui
+  template:
+    metadata:
+      labels:
+        app: redisgui
+    spec:
+      imagePullSecrets:
+      - name: odooprimart
+      containers:
+      - env:
+        - name: ADMIN_USER
+          value: 
+        - name: ADMIN_PASS
+          value: 
+        - name: REDIS_1_HOST
+          value: redis
+        - name: REDIS_1_PORT
+          value: "6379"
+        image: primaart/php_redis_admin:test
+        name: redisgui
+        ports:
+          - name: http
+            containerPort: 80 
+      restartPolicy: Always
